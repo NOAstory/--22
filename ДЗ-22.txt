@@ -4,21 +4,22 @@ class Program
 {
     static void Main()
     {
-        const string CommandSum = "sum";
-        const string CommandExit = "exit";
-        const int ArraySizeIncrement = 1;
+        const string SumCommand = "sum";
+        const string ExitCommand = "exit";
+        const int InitialSize = 5;
+        const int GrowthFactor = 2;
 
-        int[] numbers = new int[0];
-        bool isRunning = true;
+        int[] numbers = new int[InitialSize];
+        int count = 0;
 
-        Console.WriteLine($"Введите числа или команды ({CommandSum}, {CommandExit}):");
+        Console.WriteLine("Введите числа или команды (sum, exit):");
 
-        while (isRunning)
+        while (true)
         {
-            if (numbers.Length > 0)
+            if (count > 0)
             {
                 Console.Write("Введенные числа: ");
-                for (int i = 0; i < numbers.Length; i++)
+                for (int i = 0; i < count; i++)
                 {
                     Console.Write(numbers[i] + " ");
                 }
@@ -28,15 +29,15 @@ class Program
             Console.Write("Ввод: ");
             string input = Console.ReadLine();
 
-            if (input == CommandExit)
+            if (input == ExitCommand)
             {
                 Console.WriteLine("Выход из программы.");
-                isRunning = false;
+                break;
             }
-            else if (input == CommandSum)
+            else if (input == SumCommand)
             {
                 int sum = 0;
-                for (int i = 0; i < numbers.Length; i++)
+                for (int i = 0; i < count; i++)
                 {
                     sum += numbers[i];
                 }
@@ -46,21 +47,26 @@ class Program
             {
                 if (int.TryParse(input, out int number))
                 {
-                    int newSize = numbers.Length + ArraySizeIncrement;
-                    int[] newArray = new int[newSize];
-
-                    for (int i = 0; i < numbers.Length; i++)
+                    if (count >= numbers.Length)
                     {
-                        newArray[i] = numbers[i];
-                    }
+                        int newSize = numbers.Length * GrowthFactor;
+                        int[] newArray = new int[newSize];
 
-                    newArray[numbers.Length] = number;
-                    numbers = newArray;
+                        for (int i = 0; i < numbers.Length; i++)
+                        {
+                            newArray[i] = numbers[i];
+                        }
+
+                        numbers = newArray;
+                        Console.WriteLine($"Массив расширен до {newSize} элементов");
+                    }
+                    numbers[count] = number;
+                    count++;
                     Console.WriteLine($"Число {number} добавлено");
                 }
                 else
                 {
-                    Console.WriteLine($"Ошибка: введите число или команду {CommandSum}/{CommandExit}");
+                    Console.WriteLine("Ошибка: введите число или команду sum/exit");
                 }
             }
 
