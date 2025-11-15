@@ -6,15 +6,16 @@ class Program
     {
         const string SumCommand = "sum";
         const string ExitCommand = "exit";
-        const int InitialSize = 5;
-        const int GrowthFactor = 2;
+        const int InitialSize = 0;
+        const int GrowthFactor = 1;
 
         int[] numbers = new int[InitialSize];
         int count = 0;
+        bool isProgramRunning = true;
 
         Console.WriteLine("Введите числа или команды (sum, exit):");
 
-        while (true)
+        while (isProgramRunning)
         {
             if (count > 0)
             {
@@ -32,7 +33,7 @@ class Program
             if (input == ExitCommand)
             {
                 Console.WriteLine("Выход из программы.");
-                break;
+                isProgramRunning = false;
             }
             else if (input == SumCommand)
             {
@@ -47,19 +48,15 @@ class Program
             {
                 if (int.TryParse(input, out int number))
                 {
-                    if (count >= numbers.Length)
+                    int newSize = numbers.Length + GrowthFactor;
+                    int[] newArray = new int[newSize];
+
+                    for (int i = 0; i < numbers.Length; i++)
                     {
-                        int newSize = numbers.Length * GrowthFactor;
-                        int[] newArray = new int[newSize];
-
-                        for (int i = 0; i < numbers.Length; i++)
-                        {
-                            newArray[i] = numbers[i];
-                        }
-
-                        numbers = newArray;
-                        Console.WriteLine($"Массив расширен до {newSize} элементов");
+                        newArray[i] = numbers[i];
                     }
+
+                    numbers = newArray;
                     numbers[count] = number;
                     count++;
                     Console.WriteLine($"Число {number} добавлено");
