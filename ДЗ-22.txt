@@ -11,14 +11,16 @@ class Program
 
         int[] numbers = new int[InitialSize];
         int count = 0;
+        bool isRunning = true;
 
         Console.WriteLine("Введите числа или команды (sum, exit):");
 
-        while (true)
+        while (isRunning)
         {
             if (count > 0)
             {
                 Console.Write("Введенные числа: ");
+
                 for (int i = 0; i < count; i++)
                 {
                     Console.Write(numbers[i] + " ");
@@ -32,21 +34,25 @@ class Program
             if (input == ExitCommand)
             {
                 Console.WriteLine("Выход из программы.");
-                break;
+                isRunning = false;
             }
             else if (input == SumCommand)
             {
                 int sum = 0;
+
                 for (int i = 0; i < count; i++)
                 {
                     sum += numbers[i];
                 }
+
                 Console.WriteLine($"Сумма всех чисел: {sum}");
             }
             else
             {
-                if (int.TryParse(input, out int number))
+                try
                 {
+                    int number = Convert.ToInt32(input);
+
                     if (count >= numbers.Length)
                     {
                         int newSize = numbers.Length * GrowthFactor;
@@ -60,17 +66,16 @@ class Program
                         numbers = newArray;
                         Console.WriteLine($"Массив расширен до {newSize} элементов");
                     }
+
                     numbers[count] = number;
                     count++;
                     Console.WriteLine($"Число {number} добавлено");
                 }
-                else
+                catch (FormatException)
                 {
                     Console.WriteLine("Ошибка: введите число или команду sum/exit");
                 }
             }
-
-            Console.WriteLine();
         }
     }
 }
