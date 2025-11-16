@@ -8,6 +8,8 @@ class Program
         const string ExitCommand = "exit";
         const int InitialSize = 5;
         const int GrowthFactor = 2;
+        const char ZeroChar = '0';
+        const char NineChar = '9';
 
         int[] numbers = new int[InitialSize];
         int count = 0;
@@ -51,10 +53,11 @@ class Program
             {
                 bool isNumber = true;
                 int number = 0;
+                int decimalBase = 10;
 
                 for (int i = 0; i < input.Length; i++)
                 {
-                    if (input[i] < '0' || input[i] > '9')
+                    if (input[i] < ZeroChar || input[i] > NineChar)
                     {
                         isNumber = false;
                         break;
@@ -63,10 +66,9 @@ class Program
 
                 if (isNumber && input.Length > 0)
                 {
-      
                     for (int i = 0; i < input.Length; i++)
                     {
-                        number = number * 10 + (input[i] - '0');
+                        number = number * decimalBase + (input[i] - ZeroChar);
                     }
 
                     if (count >= numbers.Length)
